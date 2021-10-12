@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'metronomes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    home: Metronome(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
