@@ -15,11 +15,212 @@ class Metronome extends StatefulWidget {
 class _MetronomeState extends State<Metronome> {
   int tempo = 70;
   double value = 99;
-  double temp = 1.0;
+  double tempTemp = 1.0;
   String meter = '4/4';
   String subdiv = 'SUB/DIV';
+  void numericKeypadModal(context, tempo) {
+    int tempTemp = 130;
+    showModalBottomSheet(
+        backgroundColor: Color(0xFF6A8BFF),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(70.0),
+          ),
+        ),
+        isDismissible: false,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            //height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
+                  height: 15.0,
+                  width: 70.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    //padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                    height: 410.0,
+                    width: 350.0,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF337FF3),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(80.0),
+                      ),
+                    ),
+                    //This is the column of number keypad
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //This is the container for textfield for setting Tempo
+                        Container(
+                            height: 50.0,
+                            width: 100.0,
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Center(
+                              child: Text(
+                                tempTemp.toString(),
+                                style: ktextStyle,
+                              ),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [7, 8, 9]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    tempTemp = 100;
+                                  });
+                                },
+                                style: kstyleLeftNumberButton,
+                                child: Text(
+                                  '7',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '8',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleRightNumberButton,
+                                child: Text(
+                                  '9',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [4, 5, 6]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleLeftNumberButton,
+                                child: Text(
+                                  '4',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '5',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleRightNumberButton,
+                                child: Text(
+                                  '6',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [1, 2, 3]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleLeftNumberButton,
+                                child: Text(
+                                  '1',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '2',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleRightNumberButton,
+                                child: Text(
+                                  '3',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [c, 0, set]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleClearButton,
+                                child: Text(
+                                  'c',
+                                ),
+                              ),
+                              SizedBox(width: 8.0),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '0',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleSetButton,
+                                child: Text(
+                                  'set',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    //This is they button style for TAP button
+
     return Scaffold(
       backgroundColor: Color(0XFFAE0A14),
       appBar: AppBar(
@@ -93,6 +294,7 @@ class _MetronomeState extends State<Metronome> {
                 // Row of vertical slider.
                 Column(
                   children: [
+                    //This is the container for the meter
                     Container(
                       padding: EdgeInsets.only(top: 10.0),
                       child: Row(
@@ -117,6 +319,7 @@ class _MetronomeState extends State<Metronome> {
                           SizedBox(
                             width: 20.0,
                           ),
+                          //This is the container for sub/div
                           Container(
                             decoration: BoxDecoration(
                               color: Colors.blueAccent,
@@ -154,7 +357,7 @@ class _MetronomeState extends State<Metronome> {
                             ),
                             child: SfSlider.vertical(
                               min: 0.0,
-                              max: 100.0,
+                              max: 400.0,
                               value: tempo,
                               onChanged: (newVal) {
                                 setState(() {
@@ -174,7 +377,7 @@ class _MetronomeState extends State<Metronome> {
                             ),
                             child: SfSlider.vertical(
                               min: 0.0,
-                              max: 100.0,
+                              max: 400.0,
                               value: tempo,
                               onChanged: (newVal) {
                                 setState(() {
@@ -194,7 +397,7 @@ class _MetronomeState extends State<Metronome> {
                             ),
                             child: SfSlider.vertical(
                               min: 0.0,
-                              max: 100.0,
+                              max: 400.0,
                               value: tempo,
                               onChanged: (newVal) {
                                 setState(() {
@@ -214,7 +417,7 @@ class _MetronomeState extends State<Metronome> {
                             ),
                             child: SfSlider.vertical(
                               min: 0.0,
-                              max: 100.0,
+                              max: 400.0,
                               value: tempo,
                               onChanged: (newVal) {
                                 setState(() {
@@ -277,21 +480,17 @@ class _MetronomeState extends State<Metronome> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                //This container is for the tap button
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
+                //This is for the tap button
+                ElevatedButton(
+                  style: kstyleTap,
+                  onPressed: () {
+                    numericKeypadModal(context, tempo);
+                  },
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 5.0),
+                    padding: const EdgeInsets.fromLTRB(18.0, 9.0, 18.0, 9.0),
                     child: Text(
                       'TAP',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: ktextStyle,
                     ),
                   ),
                 ),
@@ -314,7 +513,7 @@ class _MetronomeState extends State<Metronome> {
                             onPressed: () {
                               //perform action for metronome
                               setState(() {
-                                tempo--;
+                                tempo = tempo - 10;
                               });
                             }),
                         Container(
@@ -332,7 +531,7 @@ class _MetronomeState extends State<Metronome> {
                             onPressed: () {
                               //perform action for metronome
                               setState(() {
-                                tempo++;
+                                tempo = tempo + 10;
                               });
                             }),
                       ],
