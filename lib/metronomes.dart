@@ -4,29 +4,21 @@ import 'package:flutter/cupertino.dart';
 
 bool _visible = true; //set widget visibility to true at the start
 int time01 = 0; //variables that track the beat
-int time02 = 0;
-bool time01_start = false; //Make sure timer is stopped at the beginning
+bool time01_start =
+    false; //Make sure timer is stopped at the beginning(First timer)
+bool time02_start = false; //Second timer
+bool time03_start = false; //Third timer
+bool Slow = false; //Slow tempo
+bool Fast = false; //Fast tempo
+bool Normal = false; //Default tempo
+int count = 1; //Determine the tempo
+var Seconds = 1; //Duration of timers
 
-double Tpo = 3.0; //variable for tempo
-double Tpo2 = Tpo; //backup tempo variable
-bool add = false;
-void changeTempo() {
-  //increase the tempo
-  time--;
-  _getDuration();
-}
-
-void changeTempoDecrease() {
-  //decrease the tempo
-  if (time01 >= 0) {
-    time++;
-    _getDuration();
-  }
-}
-
-double time = 1 / Tpo; //formula for tempo
-
+double time = 1 / 3.0; //formula for tempo, first timer
+double time2 = 1 / 4.0; //second timer
+double time3 = 1 / 6.0; //third timer
 Duration _getDuration() {
+  //Three duration functions for timer
   //tempo conversion
   return Duration(
     seconds: time.toInt(),
@@ -35,7 +27,25 @@ Duration _getDuration() {
   );
 }
 
-var period = _getDuration();
+Duration _getDuration2() {
+  //tempo conversion
+  return Duration(
+    seconds: time.toInt(),
+    milliseconds: (time2 * 1000).toInt() % 1000,
+    microseconds: (time2 * 1000000).toInt() % 1000,
+  );
+}
+
+Duration _getDuration3() {
+  //tempo conversion
+  return Duration(
+    seconds: time.toInt(),
+    milliseconds: (time3 * 1000).toInt() % 1000,
+    microseconds: (time3 * 1000000).toInt() % 1000,
+  );
+}
+
+var period = _getDuration(); //Initialize period to a Duration function
 
 class timerPage extends StatefulWidget {
   //metronome
@@ -45,18 +55,6 @@ class timerPage extends StatefulWidget {
 
 class _timerPage extends State<timerPage> {
   int count = 1;
-  /*void _toggle() { //toggle visibility of the widget (This is duplicated but something weird happens when i remove the duplicate)
-    setState(() {
-      if (time01 % 2 == 0) {
-        _visible = !_visible; 
-      } else {
-        _visible = true;
-      }
-      time01++;
-    });
-  }*/
-
-  //var period = _getDuration();
 
   @override
   Widget build(BuildContext context) {
@@ -85,35 +83,113 @@ class _MetronomeState extends State<Metronome> {
     });
   }
 
-  // var period = _getDuration();
-
+  //NORMAL TEMPO**********************
   time01_button_event() {
     //Toggle metronome
+    if (count == 1) {
+      Normal = true;
+      Slow = false;
+      Fast = false;
+    }
+
     if (time01_start) {
       time01_start = false;
     } else {
       time01_start = true;
     }
-
-    Timer.periodic(period, (timer) {
-      //Metronome beat
-      if (time01_start == false) {
-        //Pause metronome
-        timer.cancel();
-        _visible = true;
-        time01 = 0;
-        //Tpo = 4.0;
-        //timer = null;
-
+    if (Normal == true && Slow == false && Fast == false) {
+      period = _getDuration2();
+    }
+    Timer.periodic(/*Duration(seconds: Seconds)*/ period, (timer) {
+      //First timer
+      if (Normal == true && Slow == false && Fast == false) {
+        //Metronome beat
+        if (time01_start == false) {
+          //Pause metronome
+          timer.cancel();
+          _visible = true;
+        } else {
+          _toggle();
+        }
+        setState(() {});
       } else {
-        //play metronome
-        timer.isActive;
-        //toggle visibility
-        //Toggle sound
-        _toggle();
-        time01++;
+        timer.cancel();
       }
-      //  setState(() {});
+    });
+  }
+
+  //SLOWEST TEMPO***********************
+
+  time02_button_event() {
+    //Second timer
+    if (count == 0) {
+      Normal = false;
+      Slow = true;
+      Fast = false;
+    }
+    //Toggle metronome
+    if (time02_start) {
+      time02_start = false;
+    } else {
+      time02_start = true;
+    }
+
+    if (Normal == false && Slow == true && Fast == false) {
+      /*Jay = 2.0;
+      Seconds = Jay.toInt();*/
+      period = _getDuration();
+    }
+
+    Timer.periodic(/*Duration(seconds: Seconds)*/ period, (timer) {
+      //Metronome beat
+      if (Normal == false && Slow == true && Fast == false) {
+        if (time02_start == false) {
+          //Pause metronome
+          timer.cancel();
+          _visible = true;
+        } else {
+          _toggle();
+        }
+      } else {
+        timer.cancel();
+      }
+      setState(() {});
+    });
+  }
+
+  //FASTEST TEMPO******************
+  time03_button_event() {
+    //Third timer
+    //Toggle metronome
+    if (count == 2) {
+      Normal = false;
+      Fast = true;
+      Slow = false;
+    }
+    if (time03_start) {
+      time03_start = false;
+    } else {
+      time03_start = true;
+    }
+    if (Normal == false && Slow == false && Fast == true) {
+      /*Jay = -1;
+      Seconds = Jay.toInt();*/
+      period = _getDuration3();
+    }
+    Timer.periodic(/*Duration(seconds: Seconds)*/ period, (timer) {
+      if (Normal == false && Slow == false && Fast == true) {
+        //Metronome beat
+        if (time03_start == false) {
+          //Pause metronome
+          timer.cancel();
+          _visible = true;
+        } else {
+          _toggle();
+        }
+      } else {
+        timer.cancel();
+      }
+      setState(() {});
     });
   }
 
@@ -171,39 +247,94 @@ class _MetronomeState extends State<Metronome> {
                     IconButton(
                       onPressed: () {
                         //Decrease tempo
-                        changeTempoDecrease();
+                        if (count > 0) {
+                          count--;
 
-                        time01_start = false;
+                          if (count == 0) {
+                            //If normal tempo
+                            Normal = true;
+                            Slow = false;
+                            Fast = false;
+                            time02_button_event();
+                            time03_button_event();
+                            time01_button_event();
+                          }
 
-                        _getDuration();
-                        time01_button_event();
-                        time01_start = true;
-                        time01_button_event();
-                        time01_button_event();
+                          if (count == 1) {
+                            //If slow tempo
+                            Normal = false;
+                            Slow = true;
+                            Fast = false;
+                            time01_button_event();
+                            time03_button_event();
+                            time02_button_event();
+                          }
+
+                          if (count == 2) {
+                            //If fast tempo
+                            Normal = false;
+                            Slow = false;
+                            Fast = true;
+                            time02_button_event();
+                            time01_button_event();
+                            time03_button_event();
+                          }
+                        }
                       },
                       icon: Icon(Icons.arrow_back_ios),
                     ),
                     IconButton(
                       onPressed: () {
-                        time01_button_event();
+                        if (count == 1) {
+                          time01_button_event(); //Normal
+                        }
+                        if (count == 0) {
+                          time02_button_event(); //Slowest
+                        }
+                        if (count == 2) {
+                          time03_button_event(); //Fastest
+                        }
                       },
 
                       icon: Icon(Icons.play_arrow), //Play button
                       iconSize: 90,
                     ),
                     IconButton(
+                      //Increasing
                       onPressed: () {
-                        //Increase tempo
-                        changeTempo();
+                        if (count < 2) {
+                          count++;
 
-                        time01_start = false;
+                          if (count == 0) {
+                            //If normal tempo
+                            Normal = true;
+                            Slow = false;
+                            Fast = false;
+                            time02_button_event();
+                            time03_button_event();
+                            time01_button_event();
+                          }
 
-                        _getDuration();
-                        time01_button_event();
-                        time01_start = true;
-                        time01_button_event();
+                          if (count == 1) {
+                            //If slow tempo
+                            Normal = false;
+                            Slow = true;
+                            Fast = false;
+                            time01_button_event();
+                            time03_button_event();
+                            time02_button_event();
+                          }
 
-                        time01_button_event();
+                          if (count == 2) {
+                            //If fast tempo
+                            Normal = false;
+                            Slow = false;
+                            Fast = true;
+                            time02_button_event();
+                            time01_button_event();
+                            time03_button_event();
+                          }
+                        }
                       },
                       icon: Icon(Icons.arrow_forward_ios),
                     ),
@@ -248,113 +379,3 @@ class _MetronomeState extends State<Metronome> {
     );
   }
 }
-
-
-
-/*import 'package:flutter/material.dart';
-
-class Metronome extends StatefulWidget {
-  const Metronome({ Key? key }) : super(key: key);
-
-  @override
-  _MetronomeState createState() => _MetronomeState();
-}
-
-class _MetronomeState extends State<Metronome> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('BREATHING METRONOME'),
-        centerTitle: true,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                color: Colors.red,
-                width: 300,
-                height: 150,
-                child: Text(
-                  'TEMPO',
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: Colors.white,
-                  ),
-                  ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: 150,),
-
-          //This is the play button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 220,
-                height: 220,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      onPressed: (){},
-                      icon: Icon(Icons.arrow_back_ios),
-                    ),
-                    IconButton(
-                      onPressed: (){},
-                      icon: Icon(Icons.play_arrow),
-                      iconSize: 90,
-                    ),
-                    IconButton(
-                      onPressed: (){},
-                      icon: Icon(Icons.arrow_forward_ios),
-                    ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 90,),
-
-          //This is where the last set of buttons will be for the metronome
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 120,
-                height: 50,
-                color: Colors.grey,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      onPressed: (){}, 
-                      icon: Icon(Icons.add_circle_outline_rounded)
-                      ),
-                    Text('1'),
-                    IconButton(
-                      onPressed: (){}, 
-                      icon: Icon(Icons.do_not_disturb_on_outlined)
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
