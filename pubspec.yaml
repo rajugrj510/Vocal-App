@@ -13,6 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^9.1.0
   syncfusion_flutter_sliders: ^19.3.45
+  flutter_midi: ^1.1.0
   
 
 dev_dependencies:
@@ -22,8 +23,10 @@ dev_dependencies:
   flutter_lints: ^1.0.0
 
 flutter:
-
   uses-material-design: true
+  assets:
+    - assets/sf2/Piano.SF2
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
