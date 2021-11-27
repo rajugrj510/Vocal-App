@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "710964111322",
+    "project_id": "vocalapp-b0b3f",
+    "storage_bucket": "vocalapp-b0b3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710964111322:android:1f64bbbbe493109ad682e3",
+        "android_client_info": {
+          "package_name": "com.example.vocal_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710964111322-l9h8nrafkbrpfp5uikb3n8avemnc820a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vocal_app",
+            "certificate_hash": "4cade0cafc9b55d8f3e64cd3702433db630698a4"
+          }
+        },
+        {
+          "client_id": "710964111322-fvsai2ht20qef4t1a78mk62h0hnlbtlo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4Al_1uhIhzRjGmpS2Yhey9BvIdMuD05Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710964111322-fvsai2ht20qef4t1a78mk62h0hnlbtlo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
