@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vocal_app/metronome/metronomes.dart';
-import 'package:vocal_app/piano/piano.dart';
+import 'package:vocal_app/piano.dart';
 import 'package:vocal_app/userModle.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 import 'loginScreen.dart';
 
@@ -56,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         primary: Colors.white,
                         backgroundColor: Colors.black),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Metronome()));
                     },
                     child: Text('Metronome'),
@@ -67,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         primary: Colors.white,
                         backgroundColor: Colors.black),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Piano()));
                     },
                     child: Text('Piano'),
@@ -86,7 +88,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         minimumSize: Size(150, 150),
                         primary: Colors.white,
                         backgroundColor: Colors.black),
-                    onPressed: () {},
+                    onPressed: () {
+                      Flushbar(
+                        message: "Pitch not yet implemented",
+                        margin: EdgeInsets.all(8),
+                        borderRadius: BorderRadius.circular(8),
+                        duration: Duration(seconds: 3),
+                      )..show(context);
+                    },
                     child: Text('Pitch'),
                   ),
                   OutlinedButton(
@@ -94,7 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         minimumSize: Size(150, 150),
                         primary: Colors.white,
                         backgroundColor: Colors.black),
-                    onPressed: () {},
+                    onPressed: () {
+                      Flushbar(
+                        message: "Lessons not yet implemented",
+                        margin: EdgeInsets.all(8),
+                        borderRadius: BorderRadius.circular(8),
+                        duration: Duration(seconds: 3),
+                      )..show(context);
+                    },
                     child: Text('Lessons'),
                   ),
                 ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vocal_app/homeScreen.dart';
 import 'package:vocal_app/registrationScreen.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -187,11 +188,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => HomeScreen()))
                 });
       } on FirebaseAuthException catch (e) {
-        Fluttertoast.showToast(
-          msg: e.message.toString(),
-          backgroundColor: Colors.black,
-          toastLength: Toast.LENGTH_LONG,
-        );
+        Flushbar(
+          message: e.toString(),
+          margin: EdgeInsets.all(8),
+          borderRadius: BorderRadius.circular(8),
+          duration: Duration(seconds: 3),
+        )..show(context);
       }
   }
 }

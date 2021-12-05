@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vocal_app/homeScreen.dart';
 import 'package:vocal_app/userModle.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -293,7 +294,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         .collection("users")
         .doc(user.uid)
         .set(userModel.toMap());
-    Fluttertoast.showToast(msg: "Account created successfully");
+    Flushbar(
+      message: "Account Created Successfully",
+      margin: EdgeInsets.all(8),
+      borderRadius: BorderRadius.circular(8),
+      duration: Duration(seconds: 3),
+    )..show(context);
 
     Navigator.pushAndRemoveUntil(
         (context),
