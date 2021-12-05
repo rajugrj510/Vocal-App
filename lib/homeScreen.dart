@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vocal_app/metronome/metronomes.dart';
+import 'package:vocal_app/piano/piano.dart';
 import 'package:vocal_app/userModle.dart';
 
 import 'loginScreen.dart';
@@ -53,7 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         minimumSize: Size(150, 150),
                         primary: Colors.white,
                         backgroundColor: Colors.black),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => Metronome()));
+                    },
                     child: Text('Metronome'),
                   ),
                   OutlinedButton(
@@ -61,7 +66,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         minimumSize: Size(150, 150),
                         primary: Colors.white,
                         backgroundColor: Colors.black),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => Piano()));
+                    },
                     child: Text('Piano'),
                   ),
                 ],
