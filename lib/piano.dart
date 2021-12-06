@@ -91,6 +91,21 @@ class Piano extends StatelessWidget {
               whiteKey(5),
               keys(3, 4),
               keys(1, 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      //Passing this to root
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
             ],
           ),
         ),

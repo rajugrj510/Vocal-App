@@ -24,6 +24,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final emailEditingController = new TextEditingController();
   final passwordEditingController = new TextEditingController();
   final confirmPasswordEditingController = new TextEditingController();
+  String? errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -222,10 +223,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   children: <Widget>[
                     SizedBox(
                       height: 200,
-                      child: Text('Icon Here'),
-                      //child: Image.asset(
-                      //"assets/logo.png",
-                      //fit: BoxFit.contain,)
+                      child: Image.asset(
+                        'assets/logo.PNG',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                     SizedBox(
                       height: 45,
@@ -265,14 +266,48 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void signUp(String email, String password) async {
-    if (_formKey.currentState!.validate()) {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore()})
-          .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
-      });
-    } //if
+    if (_formKey.currentState!.validate())
+      try {
+        await _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .then((value) => {postDetailsToFirestore()});
+        /*.catchError((e) {
+        Fluttertoast.showToast(msg: e!.message);*/
+        //});
+      } on FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case "invalid-email":
+            errorMessage = "Invalid email address.";
+            break;
+          case "wrong-password":
+            errorMessage = "Invalid Password.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          case "email-already-in-use":
+            errorMessage = "User with this email already exsist.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+
+        Flushbar(
+          message: errorMessage,
+          margin: EdgeInsets.all(8),
+          borderRadius: BorderRadius.circular(8),
+          duration: Duration(seconds: 3),
+        )..show(context);
+      } //if
   } //signUp
 
   postDetailsToFirestore() async {
@@ -285,7 +320,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     //writing all the values
     userModel.email = user!.email;
-    userModel.uid = user!.uid;
+    userModel.uid = user.uid;
     userModel.firstName = firstNameEditingController.text;
     userModel.lastName = lastNameEditingController.text;
 

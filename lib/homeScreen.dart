@@ -44,86 +44,90 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                    style: TextButton.styleFrom(
-                        minimumSize: Size(150, 150),
-                        primary: Colors.white,
-                        backgroundColor: Colors.black),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                      style: TextButton.styleFrom(
+                          minimumSize: Size(150, 150),
+                          primary: Colors.white,
+                          backgroundColor: Colors.black),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Metronome()));
+                      },
+                      child: Text('Metronome'),
+                    ),
+                    OutlinedButton(
+                      style: TextButton.styleFrom(
+                          minimumSize: Size(150, 150),
+                          primary: Colors.white,
+                          backgroundColor: Colors.black),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Piano()));
+                      },
+                      child: Text('Piano'),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                      style: TextButton.styleFrom(
+                          minimumSize: Size(150, 150),
+                          primary: Colors.white,
+                          backgroundColor: Colors.black),
+                      onPressed: () {
+                        Flushbar(
+                          message: "Pitch not yet implemented",
+                          margin: EdgeInsets.all(8),
+                          borderRadius: BorderRadius.circular(8),
+                          duration: Duration(seconds: 3),
+                        )..show(context);
+                      },
+                      child: Text('Pitch'),
+                    ),
+                    OutlinedButton(
+                      style: TextButton.styleFrom(
+                          minimumSize: Size(150, 150),
+                          primary: Colors.white,
+                          backgroundColor: Colors.black),
+                      onPressed: () {
+                        Flushbar(
+                          message: "Lessons not yet implemented",
+                          margin: EdgeInsets.all(8),
+                          borderRadius: BorderRadius.circular(8),
+                          duration: Duration(seconds: 3),
+                        )..show(context);
+                      },
+                      child: Text('Lessons'),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                ActionChip(
+                    label: Text("Logout"),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Metronome()));
-                    },
-                    child: Text('Metronome'),
-                  ),
-                  OutlinedButton(
-                    style: TextButton.styleFrom(
-                        minimumSize: Size(150, 150),
-                        primary: Colors.white,
-                        backgroundColor: Colors.black),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Piano()));
-                    },
-                    child: Text('Piano'),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  OutlinedButton(
-                    style: TextButton.styleFrom(
-                        minimumSize: Size(150, 150),
-                        primary: Colors.white,
-                        backgroundColor: Colors.black),
-                    onPressed: () {
-                      Flushbar(
-                        message: "Pitch not yet implemented",
-                        margin: EdgeInsets.all(8),
-                        borderRadius: BorderRadius.circular(8),
-                        duration: Duration(seconds: 3),
-                      )..show(context);
-                    },
-                    child: Text('Pitch'),
-                  ),
-                  OutlinedButton(
-                    style: TextButton.styleFrom(
-                        minimumSize: Size(150, 150),
-                        primary: Colors.white,
-                        backgroundColor: Colors.black),
-                    onPressed: () {
-                      Flushbar(
-                        message: "Lessons not yet implemented",
-                        margin: EdgeInsets.all(8),
-                        borderRadius: BorderRadius.circular(8),
-                        duration: Duration(seconds: 3),
-                      )..show(context);
-                    },
-                    child: Text('Lessons'),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              ActionChip(
-                  label: Text("Logout"),
-                  onPressed: () {
-                    logout(context);
-                  })
-            ],
+                      logout(context);
+                    })
+              ],
+            ),
           ),
         ),
       ),

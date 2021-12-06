@@ -23,6 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   // firebase
   final _auth = FirebaseAuth.instance;
 
+  //error message
+  String? errorMessage;
+
   @override
   Widget build(BuildContext context) {
     // email field
@@ -122,7 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: <Widget>[
                     SizedBox(
                       height: 200,
-                      child: Image.asset('assets/logo.PNG'),
+                      child: Image.asset(
+                        'assets/logo.PNG',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                     SizedBox(
                       height: 45,
@@ -185,8 +191,31 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => HomeScreen()))
                 });
       } on FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case "invalid-email":
+            errorMessage = "Invalid email address.";
+            break;
+          case "wrong-password":
+            errorMessage = "Invalid Password.";
+            break;
+          case "user-not-found":
+            errorMessage = "User with this email doesn't exist.";
+            break;
+          case "user-disabled":
+            errorMessage = "User with this email has been disabled.";
+            break;
+          case "too-many-requests":
+            errorMessage = "Too many requests";
+            break;
+          case "operation-not-allowed":
+            errorMessage = "Signing in with Email and Password is not enabled.";
+            break;
+          default:
+            errorMessage = "An undefined Error happened.";
+        }
+
         Flushbar(
-          message: e.toString(),
+          message: errorMessage,
           margin: EdgeInsets.all(8),
           borderRadius: BorderRadius.circular(8),
           duration: Duration(seconds: 3),

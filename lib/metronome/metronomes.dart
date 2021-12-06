@@ -11,6 +11,7 @@ import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
 
 bool _visible = true; //set widget visibility to true at the start
 int time01 = 0; //variables that track the beat
@@ -23,6 +24,7 @@ bool Fast = false; //Fast tempo
 bool Normal = false; //Default tempo
 int count = 1; //Determine the tempo
 var Seconds = 1; //Duration of timers
+final player = AudioCache();
 
 double time = 1 / 3.0; //formula for tempo, first timer
 double time2 = 1 / 4.0; //second timer
@@ -126,7 +128,7 @@ class _MetronomeState extends State<Metronome> {
           if (!_visible) {
             audPlayer.stop();
           } else {
-            audPlayer.play("assets/assets_click_1.wav", isLocal: true);
+            player.play("click_1.wav");
             audPlayer.stop; //was commented out
           }
         }
@@ -173,7 +175,7 @@ class _MetronomeState extends State<Metronome> {
           if (!_visible) {
             audPlayer.stop();
           } else {
-            //audPlayer.play("assets/assets_click_1.wav", isLocal: true);
+            player.play("click_1.wav");
             //audPlayer.stop; //was commented out
           }
         }
@@ -217,7 +219,7 @@ class _MetronomeState extends State<Metronome> {
           if (!_visible) {
             audPlayer.stop();
           } else {
-            audPlayer.play("assets/assets_click_1.wav", isLocal: true);
+            player.play("click_1.wav");
             // audPlayer.stop; //was commented out
           }
         }
