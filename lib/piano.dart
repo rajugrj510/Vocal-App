@@ -1,114 +1,189 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+import 'dart:async';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_midi/flutter_midi.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
 
-class Piano extends StatelessWidget {
-  void playSound(int soundNumber) {
-    final player = AudioCache();
-    player.play('note$soundNumber.wav');
+enum KeyColor { WHITE, BLACK }
+
+class PianoKey extends StatelessWidget {
+  final KeyColor color;
+  final double width;
+  final int midiNote;
+  final FlutterMidi flutterMidi;
+
+  const PianoKey.white({
+    required this.width,
+    required this.midiNote,
+    required this.flutterMidi,
+  }) : this.color = KeyColor.WHITE;
+
+  const PianoKey.black({
+    required this.width,
+    required this.midiNote,
+    required this.flutterMidi,
+  }) : this.color = KeyColor.BLACK;
+
+  playNote() {
+    flutterMidi.playMidiNote(midi: midiNote);
   }
 
-  Expanded keys(int soundNumber, int soundNum2) {
-    return Expanded(
-      flex: 1,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0, bottom: 2.0, top: 2.0),
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  playSound(soundNumber);
-                }, //onWhiteKeyPress,
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white)),
-                child: const Text(''),
-              ),
-            ),
-          ),
-          Positioned(
-              top: -25.0,
-              child: Container(
-                  width: 250,
-                  height: 50.0,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      playSound(soundNum2);
-                    }, //onBlackKeyPress,
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black)),
-                    child: const Text(''),
-                  )))
-        ],
-      ),
-    );
-  }
-
-  Expanded whiteKey(int soundNumber) {
-    return Expanded(
-      flex: 1,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0, bottom: 2.0, top: 2.0),
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  playSound(soundNumber);
-                }, //onWhiteKeyPress,
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white)),
-                child: const Text(''),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  stopNote() {
+    flutterMidi.stopMidiNote(midi: midiNote);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.redAccent,
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              whiteKey(13),
-              whiteKey(12),
-              keys(10, 11),
-              keys(8, 9),
-              keys(6, 7),
-              whiteKey(5),
-              keys(3, 4),
-              keys(1, 2),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      //Passing this to root
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              )
-            ],
-          ),
+    return GestureDetector(
+      onTapDown: (_) => playNote(),
+      onTapUp: (_) => stopNote(),
+      child: Container(
+        height: width,
+        decoration: BoxDecoration(
+          color: color == KeyColor.WHITE ? Colors.white : Colors.black,
+          border: Border.all(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
         ),
+      ),
+    );
+  }
+}
+
+class Piano extends StatefulWidget {
+  const Piano({Key? key}) : super(key: key);
+
+  @override
+  _PianoState createState() => _PianoState();
+}
+
+class _PianoState extends State<Piano> {
+  final octaveNumber = 3;
+  final FlutterMidi flutterMidi = FlutterMidi();
+
+  @override
+  void initState() {
+    setupMIDIPlugin();
+    super.initState();
+  }
+
+  Future<void> setupMIDIPlugin() async {
+    flutterMidi.unmute();
+    ByteData _byte =
+        await rootBundle.load('assets/Yamaha-Grand-Lite-SF-v1.1.sf2');
+    flutterMidi.prepare(sf2: _byte);
+  }
+
+  get octaveStartingNote => (octaveNumber * 12) % 128;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final whiteKeySize = constraints.maxHeight / 7;
+        final blackKeySize = whiteKeySize / 2;
+        return Stack(
+          children: [
+            _buildWhiteKeys(whiteKeySize),
+            _buildBlackKeys(constraints.maxWidth, blackKeySize, whiteKeySize),
+          ],
+        );
+      },
+    );
+  }
+
+  _buildWhiteKeys(double whiteKeySize) {
+    return Column(
+      children: [
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote + 11,
+          flutterMidi: flutterMidi,
+        ),
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote + 9,
+          flutterMidi: flutterMidi,
+        ),
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote + 7,
+          flutterMidi: flutterMidi,
+        ),
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote + 5,
+          flutterMidi: flutterMidi,
+        ),
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote + 4,
+          flutterMidi: flutterMidi,
+        ),
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote + 2,
+          flutterMidi: flutterMidi,
+        ),
+        PianoKey.white(
+          width: whiteKeySize,
+          midiNote: octaveStartingNote,
+          flutterMidi: flutterMidi,
+        ),
+      ],
+    );
+  }
+
+  _buildBlackKeys(
+      double pianoHeight, double blackKeySize, double whiteKeySize) {
+    return Container(
+      width: pianoHeight * 0.55,
+      child: Column(
+        children: [
+          SizedBox(
+            height: whiteKeySize - blackKeySize / 2,
+          ),
+          PianoKey.black(
+            width: blackKeySize,
+            midiNote: octaveStartingNote + 10,
+            flutterMidi: flutterMidi,
+          ),
+          SizedBox(
+            height: whiteKeySize - blackKeySize,
+          ),
+          PianoKey.black(
+            width: blackKeySize,
+            midiNote: octaveStartingNote + 8,
+            flutterMidi: flutterMidi,
+          ),
+          SizedBox(
+            height: whiteKeySize - blackKeySize,
+          ),
+          PianoKey.black(
+            width: blackKeySize,
+            midiNote: octaveStartingNote + 6,
+            flutterMidi: flutterMidi,
+          ),
+          SizedBox(
+            height: whiteKeySize,
+          ),
+          SizedBox(
+            height: whiteKeySize - blackKeySize,
+          ),
+          PianoKey.black(
+            width: blackKeySize,
+            midiNote: octaveStartingNote + 3,
+            flutterMidi: flutterMidi,
+          ),
+          SizedBox(
+            height: whiteKeySize - blackKeySize,
+          ),
+          PianoKey.black(
+            width: blackKeySize,
+            midiNote: octaveStartingNote + 1,
+            flutterMidi: flutterMidi,
+          ),
+        ],
       ),
     );
   }
