@@ -1,15 +1,20 @@
-# vocal_app
+# Vocal App
 
-A new Flutter project.
+<img src="assets/logo.PNG" width="200" height="200">
 
-## Getting Started
-This project is a starting point for a Flutter application.
+This is a Vocal app which contains features like **Metronome, Piano, Vocal Analyzer, and lessons** for musician. New user can login with their email and use the feature available in the app.
+## Metronome
+Metronome features lets user play, pause, increase and decrease tempo for their desire need.
 
-A few resources to get you started if this is your first Flutter project:
+## Piano
+The app lets user play paino horizontally and tune thier instrument, voice to the desired note.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Vocal Analyzer
+One of the most **important feature** of the app. Musician can record their voice and find out if they are in-tune with the note they want to in real-time.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Lessons
+User can find music lessons on the app and refer them for better understanding.
+
+
+## Tech Stack
+Vocal App is build using Flutter framework and connected to database using Firebase.
