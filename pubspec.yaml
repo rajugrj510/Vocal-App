@@ -15,7 +15,7 @@ dependencies:
   firebase_core: ^1.10.0
   flutter:
     sdk: flutter
-  flutter_midi: any
+  flutter_midi: ^1.0.0
   flutter_svg: ^1.0.0
   fluttertoast: ^8.0.8
   font_awesome_flutter: ^9.2.0
