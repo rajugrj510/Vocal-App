@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:audio_player_example/api/sound_player.dart';
-import 'package:audio_player_example/api/sound_recorder.dart';
-import 'package:audio_player_example/widget/timer_widget.dart';
+import 'sound_player.dart';
+import 'sound_recorder.dart';
+import 'timer_widget.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,8 +77,8 @@ class _MainPageState extends State<MainPage> {
       );
 
   Widget buildPlay() {
-    final isPlaying = player.isPlaying;
-    final icon = isPlaying ? Icons.stop : Icons.play_arrow;
+    final isPlaying = player.isPlaying; //gets audio player status
+    final icon = isPlaying ? Icons.stop : Icons.play_arrow; //sets icon based on player status
     final text = isPlaying ? 'Stop Playing' : 'Play Recording';
 
     return ElevatedButton.icon(
