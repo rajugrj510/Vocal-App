@@ -6,28 +6,8 @@ import 'timer_widget.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  static final String title = 'Audio Recorder';
-
-  @override
-  Widget build(BuildContext context) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: title,
-        theme: ThemeData(primarySwatch: Colors.red),
-        home: MainPage(),
-      );
-}
+import 'Voice_Analyzer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -58,8 +38,39 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(MyApp.title),
+          backgroundColor: Color(0xFF180C0C),
+          title: Container(
+            width: 280,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(30.0, 10.0, 20.0, 10.0),
+              child: Text(
+                'Recorder',
+                style: TextStyle(
+                  fontSize: 17,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
           centerTitle: true,
+          elevation: 0.0,
+          leading: Row(
+            children: [
+              SizedBox(
+                width: 8.0,
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(FontAwesomeIcons.angleLeft),
+              ),
+            ],
+          ),
         ),
         backgroundColor: Colors.black87,
         body: Center(
@@ -71,6 +82,9 @@ class _MainPageState extends State<MainPage> {
               buildStart(),
               SizedBox(height: 20),
               buildPlay(),
+              SizedBox(height: 20),
+              BuildAnalyzer(),
+
             ],
           ),
         ),
@@ -168,4 +182,20 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+Widget BuildAnalyzer(){
+
+    return ElevatedButton.icon(style: ElevatedButton.styleFrom(
+      minimumSize: Size(175, 50),
+      primary: Colors.red,
+      onPrimary: Colors.black,
+    ),
+        icon:Icon(Icons.add_chart),
+        label: Text(
+          "Analyzer",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        onPressed:() => Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Vocal_Analyzer())),
+     );
+}
 }

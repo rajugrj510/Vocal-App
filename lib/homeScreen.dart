@@ -6,7 +6,7 @@ import 'package:vocal_app/metronome/metronomes.dart';
 import 'package:vocal_app/piano.dart';
 import 'package:vocal_app/userModle.dart';
 import 'package:another_flushbar/flushbar.dart';
-
+import 'audio-recorder-main.dart';
 import 'loginScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -92,12 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           primary: Colors.white,
                           backgroundColor: Colors.black),
                       onPressed: () {
-                        Flushbar(
-                          message: "Pitch not yet implemented",
-                          margin: EdgeInsets.all(8),
-                          borderRadius: BorderRadius.circular(8),
-                          duration: Duration(seconds: 3),
-                        )..show(context);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => MainPage()));
                       },
                       child: Text('Pitch'),
                     ),
