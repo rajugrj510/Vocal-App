@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'sound_player.dart';
-import 'sound_recorder.dart';
-import 'timer_widget.dart';
+
+import 'package:audio_player_example/api/sound_player.dart';
+import 'package:audio_player_example/api/sound_recorder.dart';
+import 'package:audio_player_example/widget/timer_widget.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,27 @@ class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  static final String title = 'Audio Recorder';
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: title,
+    theme: ThemeData(primarySwatch: Colors.red),
+    home: MainPage(),
+  );
+}
 class _MainPageState extends State<MainPage> {
   final timerController = TimerController();
   final recorder = SoundRecorder();

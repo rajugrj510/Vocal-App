@@ -135,30 +135,41 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
       ),
     );
   }
-  //drop down menu for tone selection (NEEDS IMPLEMENTATION)
+  //drop down menu for tone selection (NEEDS IMPLEMENTATION)(Needs Redesign)
   Widget buildDropMenu(){
+    final List<String> accountType = ['E', 'S', 'P'];
+    String dropdownValue = 'Select';
     return Container(
-      width: 100,
-      height: 50,
-      decoration: ShapeDecoration(
-          color: Colors.white,
-          shape: RoundedRectangleBorder (
-              borderRadius: BorderRadius.circular(32.0),
-              side: BorderSide(
-                  width: 10,
-                  color: Colors.white
-              )
-          )
-      ),
-      child: Center(
-          child: Row(
-            children: [
-              Icon(Icons.arrow_drop_down,size: 40),
-              Text("F",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 29, color: Colors.redAccent),
-              )
-            ],
-          )
-      ),
+        width: 120,
+        height: 70,
+        decoration: ShapeDecoration(
+            color: Colors.white,
+            shape: RoundedRectangleBorder (
+                borderRadius: BorderRadius.circular(32.0),
+                side: BorderSide(
+                    width: 3,
+                    color: Colors.white
+                )
+            )
+        ),
+        child:DropdownButtonFormField(
+          icon: const Icon(Icons.arrow_drop_down_sharp),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            ),
+        value: accountType[0],
+        onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+        });
+        },
+        items: accountType.map((accountType) {
+        return DropdownMenuItem<String>(
+          value: accountType,
+          child: Text(accountType),
+        );
+            }).toList(),
+          ),
     );
   }
   //outputs feedback to the user (NEEDS IMPLEMENTATION)
@@ -186,10 +197,12 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
       ),
     );
   }
+  //play button
 Widget buildPlay(){
     return Scaffold();
 }
-  Widget buildPause(){
+//pause button
+Widget buildPause(){
     return Scaffold();
   }
 }

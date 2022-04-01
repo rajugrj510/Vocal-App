@@ -20,11 +20,12 @@ dependencies:
   flutter_svg: ^1.0.0
   flutter_sound_lite: ^8.5.0
   fluttertoast: ^8.0.8
-  font_awesome_flutter: ^9.2.0
+  font_awesome_flutter: ^10.1.0
   overlay_support: ^1.2.1
   permission_handler: ^9.2.0
   syncfusion_flutter_core: ^19.3.56
   syncfusion_flutter_sliders: ^19.3.56
+
 
 
 
