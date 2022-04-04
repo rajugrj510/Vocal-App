@@ -25,6 +25,7 @@ dependencies:
   permission_handler: ^9.2.0
   syncfusion_flutter_core: ^19.3.56
   syncfusion_flutter_sliders: ^19.3.56
+  syncfusion_flutter_charts: ^19.4.56
 
 
 

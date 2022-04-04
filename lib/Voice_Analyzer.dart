@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +78,11 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  buildDropMenu()
+                  buildPause(),
+                  SizedBox(width: 36),
+                  buildDropMenu(),
+                  SizedBox(width: 36),
+                  buildPlay()
                 ],
               ),
               SizedBox(height: 50),
@@ -129,8 +134,23 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
           )
       ),
       child: Center(
-          child: Column(
+          child: Container(
+            child: SfCartesianChart(
 
+                primaryXAxis: CategoryAxis(
+                    title: AxisTitle(
+                        text: "Time s",
+                    textStyle: TextStyle(color: Colors.blue))
+            ),
+                primaryYAxis: CategoryAxis(
+                    title: AxisTitle(
+                        text: "Pitch db",
+                    textStyle: TextStyle(color: Colors.blue))),
+                // Sets 15 logical pixels as margin for all the 4 sides.
+                plotAreaBorderWidth: 0,
+                margin: EdgeInsets.fromLTRB(0,0,0,0)
+
+            ),
           )
       ),
     );
@@ -199,10 +219,30 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   }
   //play button
 Widget buildPlay(){
-    return Scaffold();
+    return RawMaterialButton(
+      onPressed: () {},
+      elevation: 2.0,
+      fillColor: Colors.green,
+      child: Icon(
+        Icons.play_arrow,
+        size: 35.0,
+      ),
+      padding: EdgeInsets.all(15.0),
+      shape: CircleBorder(),
+    );
 }
 //pause button
 Widget buildPause(){
-    return Scaffold();
+    return RawMaterialButton(
+      onPressed: () {},
+      elevation: 2.0,
+      fillColor: Colors.red,
+      child: Icon(
+        Icons.pause,
+        size: 35.0,
+      ),
+      padding: EdgeInsets.all(15.0),
+      shape: CircleBorder(),
+    );
   }
 }

@@ -1,9 +1,10 @@
 import 'dart:async';
 
 
-import 'package:audio_player_example/api/sound_player.dart';
-import 'package:audio_player_example/api/sound_recorder.dart';
-import 'package:audio_player_example/widget/timer_widget.dart';
+
+import 'package:vocal_app/sound_player.dart';
+import 'package:vocal_app/sound_recorder.dart';
+import 'package:vocal_app/timer_widget.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
