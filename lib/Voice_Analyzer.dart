@@ -157,7 +157,7 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   }
   //drop down menu for tone selection (NEEDS IMPLEMENTATION)(Needs Redesign)
   Widget buildDropMenu(){
-    final List<String> accountType = ['E', 'S', 'P'];
+    final List<String> notesList = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     String dropdownValue = 'Select';
     return Container(
         width: 120,
@@ -177,16 +177,16 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             ),
-        value: accountType[0],
+        value: notesList[0],
         onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
         });
         },
-        items: accountType.map((accountType) {
+        items: notesList.map((notesList) {
         return DropdownMenuItem<String>(
-          value: accountType,
-          child: Text(accountType),
+          value: notesList,
+          child: Text(notesList),
         );
             }).toList(),
           ),
