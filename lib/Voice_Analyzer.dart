@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,17 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+
 class Vocal_Analyzer extends StatefulWidget{
 
   @override
   Vocal_Analyzer_State createState() => Vocal_Analyzer_State();
 }
 class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
+  AudioCache audioCache = AudioCache();
+  AudioPlayer audioPlayer = AudioPlayer();
+
 
   @override
   Widget build(BuildContext context){
@@ -220,7 +226,9 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   //play button
 Widget buildPlay(){
     return RawMaterialButton(
-      onPressed: () {},
+      onPressed: () async{
+        audioPlayer = await audioCache.play('oasis.mp3');
+      },
       elevation: 2.0,
       fillColor: Colors.green,
       child: Icon(
@@ -234,7 +242,9 @@ Widget buildPlay(){
 //pause button
 Widget buildPause(){
     return RawMaterialButton(
-      onPressed: () {},
+      onPressed: () {
+      audioPlayer.pause();
+      },
       elevation: 2.0,
       fillColor: Colors.red,
       child: Icon(
