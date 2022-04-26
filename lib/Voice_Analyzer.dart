@@ -36,9 +36,9 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
           child: Padding(
             padding: EdgeInsets.fromLTRB(30.0, 10.0, 20.0, 10.0),
             child: Text(
-              'Vocal Analyzer',
+              'Voice Analyzer',
               style: TextStyle(
-                fontSize: 17,
+                fontSize: 20,
                 color: Colors.black,
               ),
             ),
@@ -69,7 +69,7 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
               end: Alignment.bottomLeft,
               colors: [
                 Colors.red,
-                Colors.black,
+                Colors.blue,
               ],
             )
         ),
@@ -145,13 +145,13 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
 
                 primaryXAxis: CategoryAxis(
                     title: AxisTitle(
-                        text: "Time s",
-                    textStyle: TextStyle(color: Colors.blue))
+                        text: "Time ",
+                    textStyle: TextStyle(color: Colors.red))
             ),
                 primaryYAxis: CategoryAxis(
                     title: AxisTitle(
                         text: "Pitch db",
-                    textStyle: TextStyle(color: Colors.blue))),
+                    textStyle: TextStyle(color: Colors.red))),
                 // Sets 15 logical pixels as margin for all the 4 sides.
                 plotAreaBorderWidth: 0,
                 margin: EdgeInsets.fromLTRB(0,0,0,0)
