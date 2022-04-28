@@ -208,13 +208,13 @@ Widget BuildAnalyzer(){
 
     return ElevatedButton.icon(style: ElevatedButton.styleFrom(
       minimumSize: Size(175, 50),
-      primary: Colors.red,
+      primary: Colors.blue,
       onPrimary: Colors.black,
     ),
         icon:Icon(Icons.add_chart),
         label: Text(
-          "Analyzer",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          "Vocal Analyzer",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         onPressed:() => Navigator.push(context,
         MaterialPageRoute(builder: (context) => Vocal_Analyzer())),
