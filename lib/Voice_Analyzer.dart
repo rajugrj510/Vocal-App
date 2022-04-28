@@ -243,12 +243,12 @@ Widget buildPlay(){
 Widget buildPause(){
     return RawMaterialButton(
       onPressed: () {
-      audioPlayer.pause();
+      audioPlayer.stop();
       },
       elevation: 2.0,
       fillColor: Colors.red,
       child: Icon(
-        Icons.pause,
+        Icons.stop,
         size: 35.0,
       ),
       padding: EdgeInsets.all(15.0),
