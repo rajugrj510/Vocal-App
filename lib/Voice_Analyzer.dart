@@ -8,6 +8,8 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vocal_app/sound_player.dart';
+
 
 
 class Vocal_Analyzer extends StatefulWidget{
@@ -15,9 +17,24 @@ class Vocal_Analyzer extends StatefulWidget{
   @override
   Vocal_Analyzer_State createState() => Vocal_Analyzer_State();
 }
+
 class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
-  AudioCache audioCache = AudioCache();
-  AudioPlayer audioPlayer = AudioPlayer();
+  final timerController = TimerController();
+  final player = SoundPlayer();
+
+  @override
+  void initState() {
+    super.initState();
+
+    player.init();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+
+    super.dispose();
+  }
 
 
   @override
@@ -227,7 +244,8 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
 Widget buildPlay(){
     return RawMaterialButton(
       onPressed: () async{
-        audioPlayer = await audioCache.play('oasis.mp3');
+        await player.togglePlaying(whenFinished: () => setState(() {}));
+        setState(() {});
       },
       elevation: 2.0,
       fillColor: Colors.green,
@@ -243,7 +261,7 @@ Widget buildPlay(){
 Widget buildPause(){
     return RawMaterialButton(
       onPressed: () {
-      audioPlayer.stop();
+      /* NOT IMPLEMENTED */
       },
       elevation: 2.0,
       fillColor: Colors.red,
