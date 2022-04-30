@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:vocal_app/sound_player.dart';
 
 
+//Note the analyzer needs sum function to confirm that a audio recording has been made
 
 class Vocal_Analyzer extends StatefulWidget{
 
@@ -19,8 +20,18 @@ class Vocal_Analyzer extends StatefulWidget{
 }
 
 class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
+  //Initialize audio players
   final timerController = TimerController();
   final player = SoundPlayer();
+  //current list of notes with corresponding frequencies
+  final List<String> tone_names = ["Soprano","Alto","Tenor","Bass"];
+  final notes_values = {"Soprano":1,"Alto":2,"Tenor":2,"Bass":2};
+  //current frequency of the recording
+  int desired_frequency = 0;
+  int current_frequency = 0;
+  //is the frequency too high or too low
+  bool is_high = false;
+  bool is_low = false;
 
   @override
   void initState() {
@@ -141,7 +152,8 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
       ),
     );
   }
-  //visualized graph (NEEDS IMPLEMENTATION)
+  //visualized graph (NEEDS RE-IMPLEMENTATION)
+  //most likely cartesian graphs will not be a sufficient vector for live visualization
   Widget buildToneGraph(){
     return Container(
       width: 400,
@@ -180,8 +192,8 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   }
   //drop down menu for tone selection (NEEDS IMPLEMENTATION)(Needs Redesign)
   Widget buildDropMenu(){
-    final List<String> notesList = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
     String dropdownValue = 'Select';
+
     return Container(
         width: 120,
         height: 70,
@@ -200,16 +212,17 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             ),
-        value: notesList[0],
+        value: tone_names[0],
         onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+
         });
         },
-        items: notesList.map((notesList) {
+        items: tone_names.map((tone_names) {
         return DropdownMenuItem<String>(
-          value: notesList,
-          child: Text(notesList),
+          value: tone_names,
+          child: Text(tone_names),
         );
             }).toList(),
           ),
@@ -217,6 +230,18 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   }
   //outputs feedback to the user (NEEDS IMPLEMENTATION)
   Widget buildFeedback(){
+    String current_text = "";
+    if(player.isPlaying){
+      current_text = "audio is playing";
+    }
+    else{
+      current_text = "Press play to begin Analyzing";
+    }
+    //should dynamically change text based on current analyzer frequency
+    /*while(player.isPlaying){
+      if(current_frequency > desired_frequency){
+      }
+    }*/
     return Container(
       width: 300,
       height: 100,
@@ -233,7 +258,8 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
       child: Center(
           child: Row(mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Nothing Here Yet",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.redAccent),
+
+              Text(current_text,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.redAccent),
               )
             ],
           )
