@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,14 +32,14 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   bool is_high = false;
   bool is_low = false;
 
-  @override
+  @override   // audio player override
   void initState() {
     super.initState();
 
     player.init();
   }
 
-  @override
+  @override    // audio player override
   void dispose() {
     player.dispose();
 
@@ -129,26 +128,31 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   }
   //timer box (NEEDS IMPLEMENTATION)
   Widget buildTimer(){
+    if (player.isPlaying) {
+      timerController.startTimer();
+    } else {
+      timerController.stopTimer();
+    }
+
     return Container(
-      width: 150,
-      height: 50,
+      width: 170,
+      height: 70,
       decoration: ShapeDecoration(
-          color: Colors.white,
+          color: Colors.black,
           shape: RoundedRectangleBorder (
               borderRadius: BorderRadius.circular(32.0),
               side: BorderSide(
                   width: 10,
-                  color: Colors.white
+                  color: Colors.black
               )
           )
       ),
       child: Center(
           child: Column(
               children: [
-                Text("00:00",style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                )
+                TimerWidget(controller: timerController),
               ],
-          )
+          ),
       ),
     );
   }
