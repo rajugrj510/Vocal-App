@@ -2,239 +2,454 @@
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-//import 'package:vocal_app/metronome/constants.dart';
-import 'constants.dart';
+
+import 'package:vocal_app/metronome/constants.dart';
 import 'Round_Icon_Button.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:path_provider/path_provider.dart';
-
-bool _visible = true; //set widget visibility to true at the start
-int time01 = 0; //variables that track the beat
-bool time01_start =
-    false; //Make sure timer is stopped at the beginning(First timer)
-bool time02_start = false; //Second timer
-bool time03_start = false; //Third timer
-bool Slow = false; //Slow tempo
-bool Fast = false; //Fast tempo
-bool Normal = false; //Default tempo
-int count = 1; //Determine the tempo
-var Seconds = 1; //Duration of timers
-final player = AudioCache();
-
-double time = 1 / 3.0; //formula for tempo, first timer
-double time2 = 1 / 4.0; //second timer
-double time3 = 1 / 6.0; //third timer
-Duration _getDuration() {
-  //Three duration functions for timer
-  //tempo conversion
-  return Duration(
-    seconds: time.toInt(),
-    milliseconds: (time * 1000).toInt() % 1000,
-    microseconds: (time * 1000000).toInt() % 1000,
-  );
-}
-
-Duration _getDuration2() {
-  //tempo conversion
-  return Duration(
-    seconds: time.toInt(),
-    milliseconds: (time2 * 1000).toInt() % 1000,
-    microseconds: (time2 * 1000000).toInt() % 1000,
-  );
-}
-
-Duration _getDuration3() {
-  //tempo conversion
-  return Duration(
-    seconds: time.toInt(),
-    milliseconds: (time3 * 1000).toInt() % 1000,
-    microseconds: (time3 * 1000000).toInt() % 1000,
-  );
-}
-
-var period = _getDuration(); //Initialize period to a Duration function
-
-class timerPage extends StatefulWidget {
-  //metronome
-  @override
-  _timerPage createState() => _timerPage();
-}
-
-class _timerPage extends State<timerPage> {
-  int count = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-}
-//END OF JAHRON ADDED CODE
 
 class Metronome extends StatefulWidget {
   @override
   _MetronomeState createState() => _MetronomeState();
 }
 
-//Metronome class
 class _MetronomeState extends State<Metronome> {
-  AudioPlayer audPlayer = AudioPlayer();
-
-  int count = 1;
-  void _toggle() {
-    //toggle widget visibility depending on if the time01 variable is even or odd
-    setState(() {
-      if (time01 % 2 == 0) {
-        _visible = !_visible;
-      } else {
-        _visible = true;
-      }
-    });
-  }
-
-  //NORMAL TEMPO**********************
-  time01_button_event() async {
-    //Toggle metronome
-    if (count == 1) {
-      Normal = true;
-      Slow = false;
-      Fast = false;
-    }
-    if (time01_start) {
-      time01_start = false;
-    } else {
-      time01_start = true;
-    }
-    if (Normal == true && Slow == false && Fast == false) {
-      period = _getDuration2();
-    }
-    Timer.periodic(/*Duration(seconds: Seconds)*/ period, (timer) {
-      //First timer
-      if (Normal == true && Slow == false && Fast == false) {
-        //Metronome beat
-        if (time01_start == false) {
-          //Pause metronome
-          timer.cancel();
-          _visible = true;
-          // audPlayer.pause();
-        } else {
-          //origninal audio implementation; has some initial delay
-          _toggle();
-          if (!_visible) {
-            audPlayer.stop();
-          } else {
-            player.play("click_1.wav");
-            audPlayer.stop; //was commented out
-          }
-        }
-        setState(() {});
-      } else {
-        timer.cancel();
-        //audPlayer.stop();
-      }
-    });
-  }
-
-  //SLOWEST TEMPO***********************
-
-  time02_button_event() {
-    //Second timer
-    if (count == 0) {
-      Normal = false;
-      Slow = true;
-      Fast = false;
-    }
-    //Toggle metronome
-    if (time02_start) {
-      time02_start = false;
-    } else {
-      time02_start = true;
-    }
-
-    if (Normal == false && Slow == true && Fast == false) {
-      /*Jay = 2.0;
-      Seconds = Jay.toInt();*/
-      period = _getDuration();
-    }
-
-    Timer.periodic(/*Duration(seconds: Seconds)*/ period, (timer) {
-      //Metronome beat
-      if (Normal == false && Slow == true && Fast == false) {
-        if (time02_start == false) {
-          //Pause metronome
-          timer.cancel();
-          _visible = true;
-          audPlayer.pause();
-        } else {
-          _toggle();
-          if (!_visible) {
-            audPlayer.stop();
-          } else {
-            player.play("click_1.wav");
-            //audPlayer.stop; //was commented out
-          }
-        }
-      } else {
-        timer.cancel();
-        audPlayer.stop();
-      }
-      setState(() {});
-    });
-  }
-
-  //FASTEST TEMPO******************
-  time03_button_event() {
-    //Third timer
-    //Toggle metronome
-    if (count == 2) {
-      Normal = false;
-      Fast = true;
-      Slow = false;
-    }
-    if (time03_start) {
-      time03_start = false;
-    } else {
-      time03_start = true;
-    }
-    if (Normal == false && Slow == false && Fast == true) {
-      /*Jay = -1;
-      Seconds = Jay.toInt();*/
-      period = _getDuration3();
-    }
-    Timer.periodic(/*Duration(seconds: Seconds)*/ period, (timer) {
-      if (Normal == false && Slow == false && Fast == true) {
-        //Metronome beat
-        if (time03_start == false) {
-          //Pause metronome
-          timer.cancel();
-          _visible = true;
-          audPlayer.pause();
-        } else {
-          _toggle();
-          if (!_visible) {
-            audPlayer.stop();
-          } else {
-            player.play("click_1.wav");
-            // audPlayer.stop; //was commented out
-          }
-        }
-      } else {
-        timer.cancel();
-        //audPlayer.stop();
-      }
-      setState(() {});
-    });
-  }
-
   int tempo = 70;
   double value = 99;
   double tempTemp = 1.0;
-  double frameWidth = 370;
+  String meter = '4/4';
+  String subdiv = 'SUB/DIV';
+  double frameWidth = 400;
+  //This is the dragable bottom sheet modal for numeric keypad
+  void numericKeypadModal(context, tempo) {
+    int tempTemp = 130;
+    showModalBottomSheet(
+        backgroundColor: Color(0xFF6A8BFF),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(70.0),
+          ),
+        ),
+        isDismissible: false,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            //height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
+                  height: 15.0,
+                  width: 70.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    //padding: EdgeInsets.only(left: 40.0, right: 40.0),
+                    height: 410.0,
+                    width: 350.0,
+                    decoration: BoxDecoration(
+                      color: Color(0xFF337FF3),
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(80.0),
+                      ),
+                    ),
+                    //This is the column of number keypad
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //This is the container for textfield for setting Tempo
+                        Container(
+                            height: 50.0,
+                            width: 100.0,
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(20.0)),
+                            child: Center(
+                              child: Text(
+                                tempTemp.toString(),
+                                style: ktextStyle,
+                              ),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [7, 8, 9]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    tempTemp = 100;
+                                  });
+                                },
+                                style: kstyleLeftNumberButton,
+                                child: Text(
+                                  '7',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '8',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleRightNumberButton,
+                                child: Text(
+                                  '9',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [4, 5, 6]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleLeftNumberButton,
+                                child: Text(
+                                  '4',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '5',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleRightNumberButton,
+                                child: Text(
+                                  '6',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [1, 2, 3]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleLeftNumberButton,
+                                child: Text(
+                                  '1',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '2',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleRightNumberButton,
+                                child: Text(
+                                  '3',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          //This is the Row of number [c, 0, set]
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 20.0,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleClearButton,
+                                child: Text(
+                                  'c',
+                                ),
+                              ),
+                              SizedBox(width: 8.0),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleCenterNumberButton,
+                                child: Text(
+                                  '0',
+                                ),
+                              ),
+                              SizedBox(width: ksizedBoxWidth),
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: kstyleSetButton,
+                                child: Text(
+                                  'set',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+//This is the bottom sheet display for the meter
+  void showMeterModal(context) {
+    showModalBottomSheet(
+        backgroundColor: Color(0xFF6B8AFD),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(35.0),
+          ),
+        ),
+        isDismissible: true,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
+                  height: 10.0,
+                  width: 50.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        height: 70.0,
+                        width: 70.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '3/4',
+                            style: ktextMeterStyle,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 30.0,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        height: 70.0,
+                        width: 70.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '4/4',
+                            style: ktextMeterStyle,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 30.0,
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        height: 70.0,
+                        width: 70.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '6/8',
+                            style: ktextMeterStyle,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+//This the bottom sheet function to display the subdivision of the tempo.
+  void showDivisionModal(context) {
+    showModalBottomSheet(
+        backgroundColor: Color(0xFF6B8AFD),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(35.0),
+          ),
+        ),
+        isDismissible: true,
+        context: context,
+        builder: (BuildContext bc) {
+          return Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                //container for the white bar at the top of container
+                Container(
+                  margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
+                  height: 10.0,
+                  width: 50.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                  //This is the row of subdivison
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 60.0,
+                        width: 60.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: IconButton(
+                          iconSize: 40.0,
+                          color: Colors.white,
+                          icon: Icon(Icons.music_note_outlined),
+                          onPressed: () {},
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Container(
+                        height: 60.0,
+                        width: 60.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: IconButton(
+                          iconSize: 40.0,
+                          color: Colors.white,
+                          icon: Icon(Icons.music_note_outlined),
+                          onPressed: () {},
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Container(
+                        height: 60.0,
+                        width: 60.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: IconButton(
+                          iconSize: 40.0,
+                          color: Colors.white,
+                          icon: Icon(Icons.music_note_outlined),
+                          onPressed: () {},
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Container(
+                        height: 60.0,
+                        width: 60.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: IconButton(
+                          iconSize: 40.0,
+                          color: Colors.white,
+                          icon: Icon(Icons.music_note_outlined),
+                          onPressed: () {},
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      Container(
+                        height: 60.0,
+                        width: 60.0,
+                        decoration: BoxDecoration(
+                          color: Color(0xFF337FF3),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: IconButton(
+                          iconSize: 40.0,
+                          color: Colors.white,
+                          icon: Icon(Icons.music_note_outlined),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                //This is the container for the bottom dark blue line dividr
+                Container(
+                  margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
+                  height: 8.0,
+                  width: 200.0,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF0055D6),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                )
+              ],
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -269,9 +484,7 @@ class _MetronomeState extends State<Metronome> {
                 width: 8.0,
               ),
               IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () {},
                 icon: Icon(FontAwesomeIcons.angleLeft),
               ),
             ],
@@ -299,10 +512,9 @@ class _MetronomeState extends State<Metronome> {
           children: [
             //This is the top container for Metronome number
             Container(
-              height: 180.0,
+              height: 200.0,
               width: 600.0,
               margin: EdgeInsets.fromLTRB(17.0, 20.0, 30.0, 10.0),
-              //decoration color for the top boxs
               decoration: BoxDecoration(
                   color: Color(0xFFEE0708),
                   borderRadius: BorderRadius.circular(15.0),
@@ -313,39 +525,197 @@ class _MetronomeState extends State<Metronome> {
                       offset: Offset(4, 2),
                     )
                   ]),
-              //This is the tempo box
-              child: Container(
-                height: 200.0,
-                width: 100.0,
-                margin: EdgeInsets.all(40.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [
-                        Color(0xFF5465DE),
-                        Color(0xFF6B8CFF),
-                        Color(0xFF6775CF)
-                      ]),
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Visibility(
-                    visible: _visible,
-                    maintainSize: true,
-                    maintainAnimation: true,
-                    maintainState: true,
-                    child: Text(
-                      tempo.toString(), //tempo number in the widget
-                      style: TextStyle(
-                        fontSize: 80,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+              //This is the row of tempo box and slider
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      height: 120.0,
+                      width: 200.0,
+                      margin:
+                          EdgeInsets.only(left: 15.0, top: 45.0, bottom: 15.0),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            colors: [
+                              Color(0xFF5465DE),
+                              Color(0xFF6B8CFF),
+                              Color(0xFF6775CF)
+                            ]),
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          tempo.toString(), //tempo number in the widget
+                          style: TextStyle(
+                            fontSize: 80,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  // Column of meter and sub division.
+                  Column(
+                    children: [
+                      //This is the container for the meter
+                      Container(
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: 45.0,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showMeterModal(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blueAccent,
+                                  borderRadius: BorderRadius.circular(7.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: Text(
+                                    meter, //The meter data show
+                                    style: kdivisionTextStyle,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 30.0,
+                            ),
+                            //This is the container for sub/div
+                            InkWell(
+                              splashColor: Colors.blue,
+                              onTap: () {
+                                showDivisionModal(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.blueAccent,
+                                  borderRadius: BorderRadius.circular(7.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      3.0, 6.0, 3.0, 6.0),
+                                  child: Text(
+                                    subdiv,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 145.0,
+                        //This is the row of slider in vertical direction.
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SfSliderTheme(
+                              data: SfSliderThemeData(
+                                thumbColor: Colors.blue[200],
+                                activeTrackHeight: kactiveSliderHeight,
+                                inactiveTrackHeight: kinactiveSliderHeight,
+                                activeTrackColor: kactiveSliderTrackColor,
+                                inactiveTrackColor: Colors.black,
+                                trackCornerRadius: -1.0,
+                              ),
+                              child: SfSlider.vertical(
+                                min: 0.0,
+                                max: 400.0,
+                                value: tempo,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    tempo = newVal.toInt();
+                                  });
+                                },
+                              ),
+                            ),
+                            SfSliderTheme(
+                              data: SfSliderThemeData(
+                                thumbColor: Colors.blue[200],
+                                activeTrackHeight: kactiveSliderHeight,
+                                inactiveTrackHeight: kinactiveSliderHeight,
+                                activeTrackColor: kactiveSliderTrackColor,
+                                inactiveTrackColor: Colors.black,
+                                trackCornerRadius: -1.0,
+                              ),
+                              child: SfSlider.vertical(
+                                min: 0.0,
+                                max: 400.0,
+                                value: tempo,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    tempo = newVal.toInt();
+                                  });
+                                },
+                              ),
+                            ),
+                            SfSliderTheme(
+                              data: SfSliderThemeData(
+                                thumbColor: Colors.blue[200],
+                                activeTrackHeight: kactiveSliderHeight,
+                                inactiveTrackHeight: kinactiveSliderHeight,
+                                activeTrackColor: kactiveSliderTrackColor,
+                                inactiveTrackColor: Colors.black,
+                                trackCornerRadius: -1.0,
+                              ),
+                              child: SfSlider.vertical(
+                                min: 0.0,
+                                max: 400.0,
+                                value: tempo,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    tempo = newVal.toInt();
+                                  });
+                                },
+                              ),
+                            ),
+                            SfSliderTheme(
+                              data: SfSliderThemeData(
+                                thumbColor: Colors.blue[200],
+                                activeTrackHeight: kactiveSliderHeight,
+                                inactiveTrackHeight: kinactiveSliderHeight,
+                                activeTrackColor: kactiveSliderTrackColor,
+                                inactiveTrackColor: Colors.black,
+                                trackCornerRadius: -1.0,
+                              ),
+                              child: SfSlider.vertical(
+                                min: 0.0,
+                                max: 400.0,
+                                value: tempo,
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    tempo = newVal.toInt();
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             //This is the play button
@@ -373,7 +743,7 @@ class _MetronomeState extends State<Metronome> {
                   ),
                   //This frame is the Top frame from the screen
                   Positioned(
-                    height: 300,
+                    height: 330,
                     child: CustomPaint(
                       size: Size(frameWidth,
                           (frameWidth * 0.9939737199818759).toDouble()),
@@ -386,54 +756,18 @@ class _MetronomeState extends State<Metronome> {
                     //This is the white circle container which contains
                     //the buttons.
                     width: 220,
-                    height: 205,
+                    height: 220,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         //Three Icon button previous, next and Play
                         Material(
+                          // borderRadius: BorderRadiusGeometry,
                           color: Colors.white,
                           child: IconButton(
                             splashColor: Colors.blue,
                             //disabledColor: Colors.deepOrange,
-                            onPressed: () {
-                              //Decrease tempo
-                              if (count > 0) {
-                                count--;
-                                tempo--;
-                                tempo--;
-
-                                if (count == 0) {
-                                  //If normal tempo
-                                  Normal = true;
-                                  Slow = false;
-                                  Fast = false;
-                                  time02_button_event();
-                                  time03_button_event();
-                                  time01_button_event();
-                                }
-
-                                if (count == 1) {
-                                  //If slow tempo
-                                  Normal = false;
-                                  Slow = true;
-                                  Fast = false;
-                                  time01_button_event();
-                                  time03_button_event();
-                                  time02_button_event();
-                                }
-
-                                if (count == 2) {
-                                  //If fast tempo
-                                  Normal = false;
-                                  Slow = false;
-                                  Fast = true;
-                                  time02_button_event();
-                                  time01_button_event();
-                                  time03_button_event();
-                                }
-                              }
-                            },
+                            onPressed: () {},
                             icon: Icon(
                               FontAwesomeIcons.chevronLeft,
                               size: 30.0,
@@ -441,66 +775,17 @@ class _MetronomeState extends State<Metronome> {
                           ),
                         ),
                         Material(
-                          color: Colors.white,
                           child: IconButton(
                             splashColor: Colors.blue,
-                            onPressed: () {
-                              if (count == 1) {
-                                time01_button_event(); //Normal
-                              }
-                              if (count == 0) {
-                                time02_button_event(); //Slowest
-                              }
-                              if (count == 2) {
-                                time03_button_event(); //Fastest
-                              }
-                            },
+                            onPressed: () {},
                             icon: Icon(FontAwesomeIcons.play),
                             iconSize: 60.0,
                           ),
                         ),
                         Material(
-                          color: Colors.white,
                           child: IconButton(
                             splashColor: Colors.blue,
-                            onPressed: () {
-                              //increase tempo
-                              if (count < 2) {
-                                count++;
-                                tempo++;
-                                tempo++;
-
-                                if (count == 0) {
-                                  //If normal tempo
-                                  Normal = true;
-                                  Slow = false;
-                                  Fast = false;
-                                  time02_button_event();
-                                  time03_button_event();
-                                  time01_button_event();
-                                }
-
-                                if (count == 1) {
-                                  //If slow tempo
-                                  Normal = false;
-                                  Slow = true;
-                                  Fast = false;
-                                  time01_button_event();
-                                  time03_button_event();
-                                  time02_button_event();
-                                }
-
-                                if (count == 2) {
-                                  //If fast tempo
-                                  Normal = false;
-                                  Slow = false;
-                                  Fast = true;
-                                  time02_button_event();
-                                  time01_button_event();
-                                  time03_button_event();
-                                }
-                              }
-                            },
+                            onPressed: () {},
                             icon: Icon(
                               FontAwesomeIcons.chevronRight,
                               size: 30.0,
@@ -521,8 +806,25 @@ class _MetronomeState extends State<Metronome> {
             Expanded(
               flex: 1,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //This is for the tap button
+                  ElevatedButton(
+                    style: kstyleTap,
+                    onPressed: () {
+                      numericKeypadModal(context, tempo);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(18.0, 9.0, 18.0, 9.0),
+                      child: Text(
+                        'TAP',
+                        style: ktextStyle,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
                   //This container is for the increase and decrease icon.
                   Container(
                     decoration: BoxDecoration(
@@ -534,7 +836,6 @@ class _MetronomeState extends State<Metronome> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          //this  is the icon for the decrease icon
                           RoundIconButton(
                               icon: FontAwesomeIcons.minus,
                               onPressed: () {
@@ -547,19 +848,12 @@ class _MetronomeState extends State<Metronome> {
                             width: 40.0,
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Visibility(
-                                visible: _visible,
-                                maintainSize: true,
-                                maintainAnimation: true,
-                                maintainState: true,
-                                child: Text(
-                                  tempo.toString(),
-                                  style: ktextStyle,
-                                ),
+                              child: Text(
+                                tempo.toString(),
+                                style: ktextStyle,
                               ),
                             ),
                           ),
-                          //this is the icon for the increase icon
                           RoundIconButton(
                               icon: FontAwesomeIcons.plus,
                               onPressed: () {
