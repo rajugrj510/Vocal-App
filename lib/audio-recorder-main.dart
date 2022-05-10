@@ -1,7 +1,5 @@
 import 'dart:async';
-
-
-
+import 'dart:io';
 import 'package:vocal_app/sound_player.dart';
 import 'package:vocal_app/sound_recorder.dart';
 import 'package:vocal_app/timer_widget.dart';
@@ -62,18 +60,18 @@ class _MainPageState extends State<MainPage> {
         appBar: AppBar(
           backgroundColor: Color(0xFF180C0C),
           title: Container(
-            width: 280,
+            width: 300,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.black,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Padding(
-              padding: EdgeInsets.fromLTRB(30.0, 10.0, 20.0, 10.0),
+              padding: EdgeInsets.fromLTRB(90.0, 10.0, 20.0, 10.0),
               child: Text(
-                'Recorder',
+                'RECORDER',
                 style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.black,
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -207,14 +205,14 @@ class _MainPageState extends State<MainPage> {
 Widget BuildAnalyzer(){
 
     return ElevatedButton.icon(style: ElevatedButton.styleFrom(
-      minimumSize: Size(175, 50),
-      primary: Colors.blue,
-      onPrimary: Colors.black,
+      minimumSize: Size(300, 50),
+      primary: Colors.deepPurpleAccent,
+      onPrimary: Colors.white,
     ),
         icon:Icon(Icons.add_chart),
         label: Text(
           "Vocal Analyzer",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
         onPressed:() => Navigator.push(context,
         MaterialPageRoute(builder: (context) => Vocal_Analyzer())),

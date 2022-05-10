@@ -7,6 +7,7 @@ import 'timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vocal_app/sound_player.dart';
+import 'dart:io';
 
 
 //Note the analyzer needs sum function to confirm that a audio recording has been made
@@ -22,8 +23,8 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   final timerController = TimerController();
   final player = SoundPlayer();
   //current list of notes with corresponding frequencies
-  final List<String> tone_names = ["Soprano","Alto","Tenor","Bass"];
-  final notes_values = {"Soprano":1,"Alto":2,"Tenor":2,"Bass":2};
+  final List<String> tone_names = ["A","B","C","D","E","F","G"];
+  final notes_values = {"A":1,"B":2,"C":2,"D":2,"E":2,"F":2,"G":2};
   //current frequency of the recording
   int desired_frequency = 0;
   int current_frequency = 0;
@@ -54,18 +55,18 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
       appBar: AppBar(
         backgroundColor: Color(0xFF180C0C),
         title: Container(
-          width: 280,
+          width: 300,
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.purple,
+            borderRadius: BorderRadius.circular(20.0),
           ),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(30.0, 10.0, 20.0, 10.0),
+            padding: EdgeInsets.fromLTRB(60.0, 10.0, 20.0, 10.0),
             child: Text(
               'Voice Analyzer',
               style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
+                fontSize: 22,
+                color: Colors.white,
               ),
             ),
           ),
@@ -137,12 +138,12 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
       width: 170,
       height: 70,
       decoration: ShapeDecoration(
-          color: Colors.black,
+          color: Colors.red,
           shape: RoundedRectangleBorder (
-              borderRadius: BorderRadius.circular(32.0),
+              borderRadius: BorderRadius.circular(30.0),
               side: BorderSide(
                   width: 10,
-                  color: Colors.black
+                  color: Colors.white
               )
           )
       ),
@@ -159,7 +160,7 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
   //most likely cartesian graphs will not be a sufficient vector for live visualization
   Widget buildToneGraph(){
     return Container(
-      width: 400,
+      width: 350,
       height: 250,
       decoration: ShapeDecoration(
           color: Colors.black,
@@ -177,13 +178,13 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
 
                 primaryXAxis: CategoryAxis(
                     title: AxisTitle(
-                        text: "Time ",
-                    textStyle: TextStyle(color: Colors.red))
+                        text: "TIME",
+                    textStyle: TextStyle(color: Colors.white))
             ),
                 primaryYAxis: CategoryAxis(
                     title: AxisTitle(
                         text: "Pitch db",
-                    textStyle: TextStyle(color: Colors.red))),
+                    textStyle: TextStyle(color: Colors.white))),
                 // Sets 15 logical pixels as margin for all the 4 sides.
                 plotAreaBorderWidth: 0,
                 margin: EdgeInsets.fromLTRB(0,0,0,0)
@@ -247,7 +248,7 @@ class Vocal_Analyzer_State extends State<Vocal_Analyzer>{
     }*/
     return Container(
       width: 300,
-      height: 100,
+      height: 50,
       decoration: ShapeDecoration(
           color: Colors.white,
           shape: RoundedRectangleBorder (
@@ -277,20 +278,22 @@ Widget buildPlay(){
         setState(() {});
       },
       elevation: 2.0,
-      fillColor: Colors.green,
+      fillColor: Colors.blue,
       child: Icon(
         Icons.play_arrow,
-        size: 35.0,
+        size: 40.0,
       ),
       padding: EdgeInsets.all(15.0),
       shape: CircleBorder(),
     );
 }
-//pause button
+//stop button
+  //made it similar to play button so it can function as a button
 Widget buildPause(){
     return RawMaterialButton(
-      onPressed: () {
-      /* NOT IMPLEMENTED */
+      onPressed: () async{
+        await player.togglePlaying(whenFinished: () => setState(() {}));
+        setState(() {});
       },
       elevation: 2.0,
       fillColor: Colors.red,
