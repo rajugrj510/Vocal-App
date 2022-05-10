@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'loginScreen.dart';
 import 'metronome/metronomes.dart';
 import 'piano.dart';
-import 'audioRecorder/audio-recorder-main.dart';
+import 'audio-recorder-main.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
